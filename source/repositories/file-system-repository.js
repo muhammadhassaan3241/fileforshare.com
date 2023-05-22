@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const readline = require("readline");
 
 class FileSystemRepository {
   constructor() {
@@ -49,13 +50,23 @@ class FileSystemRepository {
 
   // Asynchronous operations
   readFile(filePath, callback) {
-    fs.readFile(filePath, "utf8", (err, data) => {
-      if (!err) {
-        // Process file data
-        callback(null, data);
-      } else {
-        callback(err);
-      }
+    const lineReader = readline.createInterface({
+      input: fs.createReadStream(filePath),
+      crlfDelay: Infinity,
+    });
+
+    const lines = [];
+
+    lineReader.on("line", (line) => {
+      lines.push(line);
+    });
+
+    lineReader.on("close", () => {
+      callback(null, lines);
+    });
+
+    lineReader.on("error", (err) => {
+      callback(err);
     });
   }
 
@@ -92,20 +103,24 @@ class FileSystemRepository {
   }
 
   // Error handling
-  writeFileWithRetry(filePath, data, retries = 3, callback) {
-    fs.writeFile(filePath, data, (err) => {
-      if (err) {
-        if (retries > 0) {
-          // Retry after a delay
-          setTimeout(() => {
-            this.writeFileWithRetry(filePath, data, retries - 1, callback);
-          }, 1000);
-        } else {
-          callback(err);
-        }
-      } else {
-        callback(null);
-      }
+  writeFile(filePath, content, callback) {
+    const lines = content.split("\n");
+
+    const writeStream = fs.createWriteStream(filePath);
+
+    lines.forEach((line) => {
+      writeStream.write(line + "\n");
+    });
+
+    writeStream.end();
+    writeStream.on("finish", () => {
+      console.log("File created successfully.");
+      callback(content);
+    });
+
+    writeStream.on("error", (err) => {
+      console.error(err);
+      callback(err);
     });
   }
 }
@@ -114,45 +129,45 @@ class FileSystemRepository {
 const fileSystemRepo = new FileSystemRepository();
 module.exports = fileSystemRepo;
 
-fileSystemRepo.batchReadFiles(
-  ["file1.txt", "file2.txt", "file3.txt"],
-  (err, fileData) => {
-    if (!err) {
-      console.log(fileData);
-    }
-  }
-);
+// fileSystemRepo.batchReadFiles(
+//   ["file1.txt", "file2.txt", "file3.txt"],
+//   (err, fileData) => {
+//     if (!err) {
+//       console.log(fileData);
+//     }
+//   }
+// );
 
-fileSystemRepo.readCachedFile("cachedFile.txt", (err, data) => {
-  if (!err) {
-    console.log(data);
-  }
-});
+// fileSystemRepo.readCachedFile("cachedFile.txt", (err, data) => {
+//   if (!err) {
+//     console.log(data);
+//   }
+// });
 
-fileSystemRepo.readFile("file.txt", (err, data) => {
-  if (!err) {
-    console.log(data);
-  }
-});
+// fileSystemRepo.readFile("file.txt", (err, data) => {
+//   if (!err) {
+//     console.log(data);
+//   }
+// });
 
-fileSystemRepo.processFileStream("input.txt", "output.txt", (err) => {
-  if (err) {
-    console.error("Failed to process file stream:", err);
-  } else {
-    console.log("File stream processed successfully.");
-  }
-});
+// fileSystemRepo.processFileStream("input.txt", "output.txt", (err) => {
+//   if (err) {
+//     console.error("Failed to process file stream:", err);
+//   } else {
+//     console.log("File stream processed successfully.");
+//   }
+// });
 
-fileSystemRepo.getIndex("/path/to/directory", (err, index) => {
-  if (!err) {
-    console.log(index);
-  }
-});
+// fileSystemRepo.getIndex("/path/to/directory", (err, index) => {
+//   if (!err) {
+//     console.log(index);
+//   }
+// });
 
-fileSystemRepo.writeFileWithRetry("file.txt", "data", (err) => {
-  if (err) {
-    console.error("Failed to write file:", err);
-  } else {
-    console.log("File written successfully.");
-  }
-});
+// fileSystemRepo.writeFileWithRetry("file.txt", "data", (err) => {
+//   if (err) {
+//     console.error("Failed to write file:", err);
+//   } else {
+//     console.log("File written successfully.");
+//   }
+// });

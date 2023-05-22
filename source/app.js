@@ -22,9 +22,13 @@ app.use(express.static(appFolders));
 
 const userRoutes = require("./routes/user-routes");
 const appRoutes = require("./routes/app-routes");
+const fileRoutes = require("./routes/file-routes");
+const planRoutes = require("./routes/plan-routes");
 
 app.use("/api", userRoutes);
 app.use("/api", appRoutes);
+app.use("/api", fileRoutes);
+app.use("/api", planRoutes);
 
 const server = http.createServer(app);
 

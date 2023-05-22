@@ -1,10 +1,10 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
 const { genSalt, hash } = require("bcrypt");
 
 const userSchema = new Schema(
   {
     ip: {
-      type: String,
+      type: Number,
       unique: true,
       required: true,
     },
@@ -20,6 +20,11 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    role: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      default: "User",
     },
   },
   {

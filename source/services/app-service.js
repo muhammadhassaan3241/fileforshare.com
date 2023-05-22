@@ -1,4 +1,3 @@
-const { default: mongoose } = require("mongoose");
 const {
   HttpStatusCodes,
   HttpStatusNames,
@@ -65,7 +64,10 @@ module.exports = {
             if (createFolderInDatabase) {
               const createFolderInAppFolders =
                 await folderSystemRepository.createFolder(ip);
-              if (createFolderInAppFolders) {
+              if (
+                createFolderInAppFolders &&
+                createFolderInAppFolders === undefined
+              ) {
                 return {
                   data: {},
                   status: HttpStatusCodes.badRequest,
@@ -81,13 +83,13 @@ module.exports = {
               };
             }
           }
+          return {
+            data: getFolderFromDatabase,
+            status: HttpStatusCodes.conflict,
+            code: HttpStatusCodes.conflict,
+            message: "Folder Already Exists",
+          };
         }
-        return {
-          data: getFolderFromDatabase,
-          status: HttpStatusCodes.conflict,
-          code: HttpStatusCodes.conflict,
-          message: "Folder Already Exists",
-        };
       }
     } catch (error) {
       return {
