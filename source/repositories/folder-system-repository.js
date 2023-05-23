@@ -12,7 +12,7 @@ class FolderRepository {
 
     try {
       const newFolder = await fs.mkdir(folderPath);
-      return newFolder;
+      return true;
     } catch (error) {
       console.error(`Error creating folder: ${folderPath}`, error);
       throw error;

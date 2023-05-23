@@ -1,53 +1,47 @@
-const User = require("../models/user-model");
+const Permission = require("../models/permission-model");
 
-class UserRepository {
-  async createUser(userData) {
+class PermissionRepository {
+  async createPermission(permissionData) {
     try {
-      const newUser = await User.create(userData);
-      return newUser;
-    } catch (error) {
-      throw new Error("Failed to create user: " + error.message);
-    }
+      const newPermission = await Permission.create(permissionData);
+      return newPermission;
+    } catch (error) {}
   }
 
-  async findUser(query) {
+  async findPermission(query) {
     try {
-      const user = await User.findOne(query);
-      return user;
-    } catch (error) {
-      throw new Error("Failed to find user: " + error.message);
-    }
+      const permission = await Permission.findOne(query);
+      return permission;
+    } catch (error) {}
   }
 
-  async findUsers(query) {
+  async findPermissions(query) {
     try {
-      const users = await User.find(query);
-      return users;
-    } catch (error) {
-      throw new Error("Failed to retrieve users: " + error.message);
-    }
+      const permissions = await Permission.find(query);
+      return permissions;
+    } catch (error) {}
   }
 
-  async updateUser(query, updatedData) {
+  async updatePermission(query, updatedData) {
     try {
-      const updatedUser = await User.findByIdAndUpdate(query, updatedData, {
-        new: true,
-      });
-      return updatedUser;
-    } catch (error) {
-      throw new Error("Failed to update user: " + error.message);
-    }
+      const updatedPermission = await Permission.findOneAndUpdate(
+        query,
+        updatedData,
+        {
+          new: true,
+        }
+      );
+      return updatedPermission;
+    } catch (error) {}
   }
 
-  async deleteUser(query) {
+  async deletePermission(query) {
     try {
-      const deletedUser = await User.findByIdAndDelete(query);
-      return deletedUser;
-    } catch (error) {
-      throw new Error("Failed to delete user: " + error.message);
-    }
+      const deletedPermission = await Permission.findOneAndDelete(query);
+      return deletedPermission;
+    } catch (error) {}
   }
 }
 
-const userRepository = new UserRepository();
-module.exports = userRepository;
+const permissionRepository = new PermissionRepository();
+module.exports = permissionRepository;

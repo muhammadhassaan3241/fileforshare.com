@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const folderSchema = new Schema(
   {
     name: {
-      type: Number,
+      type: String,
       required: true,
     },
     owner: {

@@ -4,7 +4,7 @@ const { genSalt, hash } = require("bcrypt");
 const userSchema = new Schema(
   {
     ip: {
-      type: Number,
+      type: String,
       unique: true,
       required: true,
     },
@@ -23,8 +23,8 @@ const userSchema = new Schema(
     },
     role: {
       type: mongoose.Types.ObjectId,
+      ref: "Role",
       required: true,
-      default: "User",
     },
   },
   {
@@ -36,6 +36,14 @@ userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     const saltRounds = await genSalt(10);
     this.password = await hash(this.password, saltRounds);
+  }
+  next();
+});
+
+userSchema.pre("findOneAndUpdate", async function (next) {
+  if (this._update.password) {
+    const saltRounds = await genSalt(10);
+    this._update.password = await hash(this._update.password, saltRounds);
   }
   next();
 });

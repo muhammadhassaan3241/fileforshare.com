@@ -2,12 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const paymentSchema = new Schema(
   {
-    userId: {
-      type: Number,
-      required: true,
-    },
-    planId: {
-      type: Number,
+    subscriptionId: {
+      type: Schema.Types.ObjectId,
+      ref: "Subscription",
       required: true,
     },
     amount: {

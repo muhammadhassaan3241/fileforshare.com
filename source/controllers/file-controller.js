@@ -7,6 +7,7 @@ const {
   uploadFiles,
   writeFile,
   readFile,
+  removeData,
 } = require("../services/file-service");
 
 module.exports = {
@@ -32,9 +33,9 @@ module.exports = {
 
   writeFile: async (request, response) => {
     try {
-      const { body, ip } = request;
-      const { data, status, code, message } = await writeFile(body, ip);
-      return apiResponse(response, status, code, message, data);
+      const { body, ipAddress } = request;
+      await writeFile(body, ipAddress);
+      return response.redirect("/api/home");
     } catch (error) {
       return apiResponse(
         response,
@@ -48,9 +49,25 @@ module.exports = {
 
   readFile: async (request, response) => {
     try {
-      const { ip } = request;
-      const { data, status, code, message } = await readFile(ip);
-      return apiResponse(response, status, code, message, data);
+      const { ipAddress } = request;
+      const { data, status, code, message } = await readFile(ipAddress);
+      // return apiResponse(response, status, code, message, data);
+    } catch (error) {
+      return apiResponse(
+        response,
+        HttpStatusCodes.badRequest,
+        HttpStatusCodes.badRequest,
+        HttpStatusNames.badRequest,
+        undefined
+      );
+    }
+  },
+
+  removeDataFromFile: async (request, response) => {
+    try {
+      const { ipAddress } = request;
+      await removeData(ipAddress);
+      return response.redirect("/api/home");
     } catch (error) {
       return apiResponse(
         response,

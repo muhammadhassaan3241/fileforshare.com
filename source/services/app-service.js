@@ -8,95 +8,63 @@ const folderSystemRepository = require("../repositories/folder-system-repository
 const userRepository = require("../repositories/user-repository");
 
 module.exports = {
-  createFolder: async (ipAddress) => {
-    try {
-      if (ipAddress === undefined) {
-        return {
-          data: {},
-          status: HttpStatusCodes.badRequest,
-          code: HttpStatusCodes.badRequest,
-          message: "Failed To Fetch IP Address",
-        };
-      }
-      const ip = ipAddress.replace(/[:.]/g, "");
-      const getUserFromDatabase = await userRepository.findUser({ ip });
-      if (!getUserFromDatabase && getUserFromDatabase === null) {
-        const getFolderFromDatabase = await folderRepository.findFolder({
-          name: ip,
-        });
-        if (!getFolderFromDatabase && getFolderFromDatabase === null) {
-          const getFolderFromAppFolders =
-            await folderSystemRepository.getFolders();
-          if (getFolderFromAppFolders.length === 0) {
-            const formData = { name: ip };
-            const createFolderInDatabase = await folderRepository.createFolder(
-              formData
-            );
-            if (createFolderInDatabase) {
-              await folderSystemRepository.createFolder(ip);
-              return {
-                data: createFolderInDatabase,
-                status: HttpStatusCodes.ok,
-                code: HttpStatusCodes.ok,
-                message: HttpStatusNames.ok,
-              };
-            }
-          }
+  createFolder: (ip) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (ip === undefined) {
+          resolve({
+            data: {},
+            status: HttpStatusCodes.badRequest,
+            code: HttpStatusCodes.badRequest,
+            message: "Failed To Fetch IP Address",
+          });
         }
-        return {
-          data: getFolderFromDatabase,
-          status: HttpStatusCodes.conflict,
-          code: HttpStatusCodes.conflict,
-          message: "Folder Already Exists",
-        };
-      } else {
-        const getFolderFromDatabase = await folderRepository.findFolder({
-          name: ip,
-        });
-        if (!getFolderFromDatabase && getFolderFromDatabase === null) {
-          const getFolderFromAppFolders =
+
+        const checkIfTheUserExists = await userRepository.findUser({ ip });
+
+        if (!checkIfTheUserExists) {
+          const checkFolderInAppFolders =
             await folderSystemRepository.getFolders();
-          if (getFolderFromAppFolders.length === 0) {
-            const formData = { name: ip, owner: getUserFromDatabase._id };
-            const createFolderInDatabase = await folderRepository.createFolder(
-              formData
-            );
-            if (createFolderInDatabase) {
-              const createFolderInAppFolders =
-                await folderSystemRepository.createFolder(ip);
-              if (
-                createFolderInAppFolders &&
-                createFolderInAppFolders === undefined
-              ) {
-                return {
-                  data: {},
-                  status: HttpStatusCodes.badRequest,
-                  code: HttpStatusCodes.badRequest,
-                  message: "Failed To Create Folder",
-                };
-              }
-              return {
-                data: createFolderInDatabase,
-                status: HttpStatusCodes.ok,
-                code: HttpStatusCodes.ok,
-                message: HttpStatusNames.ok,
-              };
+          if (!checkFolderInAppFolders.includes(ip)) {
+            const createNewFolderInAppFolders =
+              await folderSystemRepository.createFolder(ip);
+
+            if (!createNewFolderInAppFolders) {
+              resolve({
+                data: {},
+                status: HttpStatusCodes.badRequest,
+                code: HttpStatusCodes.badRequest,
+                message: "Error Occur In Creating Storage",
+              });
             }
+
+            resolve({
+              data: createNewFolderInAppFolders,
+              status: HttpStatusCodes.ok,
+              code: HttpStatusCodes.ok,
+              message: HttpStatusNames.ok,
+            });
           }
-          return {
-            data: getFolderFromDatabase,
+
+          resolve({
+            data: checkFolderInAppFolders,
             status: HttpStatusCodes.conflict,
             code: HttpStatusCodes.conflict,
             message: "Folder Already Exists",
-          };
+          });
         }
+
+        // If user is logged in
+      } catch (error) {
+        console.log({ error });
+        resolve({
+          data: {},
+          status: HttpStatusCodes.internalServerError,
+          code: HttpStatusCodes.internalServerError,
+          message: HttpStatusNames.internalServerError,
+        });
       }
-    } catch (error) {
-      return {
-        code: HttpStatusCodes.internalServerError,
-        message: HttpStatusNames.internalServerError,
-      };
-    }
+    });
   },
 
   deleteFolder: async (ipAddress) => {
@@ -108,36 +76,6 @@ module.exports = {
           code: HttpStatusCodes.badRequest,
           message: "Failed To Fetch IP Address",
         };
-      }
-      const ip = ipAddress.replace(/[:.]/g, "");
-      const getFolderFromDatabase = await folderRepository.findFolder({
-        name: ip,
-      });
-      if (!getFolderFromDatabase && getFolderFromDatabase === null) {
-        const getFolderFromAppFolders =
-          await folderSystemRepository.getFolders();
-        if (getFolderFromAppFolders.length === 0) {
-          return {
-            data: getFolderFromDatabase,
-            status: HttpStatusCodes.notFound,
-            code: HttpStatusCodes.notFound,
-            message: "Folder Not Found",
-          };
-        }
-      } else {
-        const deleteFolderFromDatabase = await folderRepository.deleteFolder(
-          getFolderFromDatabase._id
-        );
-        if (deleteFolderFromDatabase) {
-          console.log({ deleteFolderFromDatabase });
-          await folderSystemRepository.deleteFolder(ip);
-          return {
-            data: deleteFolderFromDatabase,
-            status: HttpStatusCodes.ok,
-            code: HttpStatusCodes.ok,
-            message: HttpStatusNames.ok,
-          };
-        }
       }
     } catch (error) {
       return {

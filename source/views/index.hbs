@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home - Files for Share</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/css/fileinput.min.css'>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.3.slim.min.js"
+    integrity="sha256-ZwqZIVdD3iXNyGHbSYdsmWP//UBokj2FHAxKuSBKDSo=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="navbar navbar-expand-lg bg-light-me botmNavbar fixed-top" id="navbar_top">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img src="/img/logo.png" alt="" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mainmenu" id="navbarSupportedContent">
+          <div class="navbar-nav me-auto mb-lg-0 mx-auto customWidth">
+
+            <ul class="navbar-nav me-auto mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#aboutUsSection">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#pricingSection">Upgrade</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#FeedbackSection">Feedback</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="navSideCart">
+
+            <div class="btn-group" style="display: none;">
+              <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="/img/user.png" alt="user.png"> Jamil Phullani
+              </button>
+              <ul class="dropdown-menu userDropDown">
+                <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                <li><a class="dropdown-item" href="#">FAQ's</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+              </ul>
+            </div>
+
+            <div class="btnUserLogin" style="display: block;">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a type="button" class="nav-link login_btn" href="#" data-bs-toggle="modal"
+                    data-bs-target="#LoginRegisterModal">Login</a></li>
+                <li class="nav-item"><a type="button" class="nav-link register_btn" href="#" data-bs-toggle="modal"
+                    data-bs-target="#LoginRegisterModal">Register</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="mt-5 pt-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-8 col-lg-6 mt-5 mb-2">
+          <div class="textSection1st text-center">
+            <p>Our platform makes it easy to share files within your own network, whether you're collaborating on a
+              project with coworkers, sharing family photos with loved ones, or exchanging files between your personal
+              devices.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-10 mt-2 mb-4">
+          <div class="uploadSection">
+            <div class="d-flex align-items-start bg-me-gray">
+              <div class="nav flex-column nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+                  data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+                  aria-selected="true">
+                  <img class="tabsIcons" src="/img/icons/tabs-icon-1.png" alt="tabs-icon-1" />
+                </button>
+                <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
+                  data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+                  aria-selected="false">
+                  <img class="tabsIcons" src="/img/icons/tabs-icon-2.png" alt="tabs-icon-2" />
+                </button>
+              </div>
+              <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                  aria-labelledby="v-pills-home-tab" tabindex="0">
+                  <div class="textEditer">
+                    <div class="editerHeader">
+                      <h5>Text</h5>
+                      <a class="clearData" href="/api/file/remove">Clear All</a>
+                    </div>
+
+                    <form action="/api/file/write" method="post">
+                      <div class="innerTextEditer">
+                        {{#compare readFile '!==' undefined}}
+                        <textarea class="form-control" name="text" id="text" cols="30" rows="10"
+                          placeholder="Type Here...">{{readFile}}</textarea>
+                        {{else}}
+                        <textarea class="form-control" name="text" id="text" cols="30" rows="10"
+                          placeholder="Type Here..."></textarea>
+                        {{/compare}}
+                      </div>
+                      <div class="row justify-content-end my-5">
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                          <div class="editerFooter">
+                            <a href="/api/file/read" style="text-decoration: none;!important"><button
+                                type="submit">Save</button></a>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"
+                  tabindex="0">
+                  <div class="uploadEditer">
+                    <div class="editerHeader">
+                      <h5>File Upload</h5>
+                      <a class="clearData" href="#">Clear All</a>
+                    </div>
+                    <div class="innerUploadEditer">
+
+
+                      <div class="fileUploadArea">
+                        <div class="verify-sub-box">
+                          <div class="file-loading">
+                            <input id="multiplefileupload" type="file" accept=".jpg,.gif,.png" multiple>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- <div class="bg-diffrent">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="verify-sub-box">
+                                           <div class="file-loading">
+                                               <input id="multiplefileupload" type="file" accept=".jpg,.gif,.png" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div> -->
+
+
+
+                    </div>
+
+                    <div class="row justify-content-end my-5">
+                      <div class="col-sm-6 col-md-4 col-lg-3">
+                        <div class="editerFooter">
+                          <button type="button">Save</button>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-12 col-lg-10 my-3">
+          <div class="stepByStep text-center">
+            <div class="innerTextSec3">
+              <span>Step by step Guide</span>
+              <h3>How it Works</h3>
+              <p>FilesForShare (FFS) is an effortless way to share documents, text, and URLs with other <br> devices on
+                the same Wi-Fi network.</p>
+            </div>
+          </div>
+          <div class="row my-4">
+            <div class="col-sm-12 col-md-12 col-lg-4">
+              <div class="serviceCardInner text-center px-5 py-5 my-2 mx-2">
+                <img src="/img/guide-1.png" alt="guide-1" />
+                <h6>Connect</h6>
+                <p>Connect all your devices to the same Wi-Fi network</p>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+              <div class="serviceCardInner text-center px-5 py-5 my-2 mx-2">
+                <img src="/img/guide-2.png" alt="guide-1" />
+                <h6>Upload</h6>
+                <p>Connect all your devices to the same Wi-Fi network</p>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-4">
+              <div class="serviceCardInner text-center px-5 py-5 my-2 mx-2">
+                <img src="/img/guide-3.png" alt="guide-1" />
+                <h6>Download</h6>
+                <p>Connect all your devices to the same Wi-Fi network</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="sectionBg-se" id="aboutUsSection">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-10 col-lg-10 mt-5">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+              <div class="chooseUsSe py-5">
+                <span>Why choose us</span>
+                <h3>Save Your Time <br /> with alot of Features</h3>
+                <p>Our platform is user-friendly and intuitive, so you can quickly upload and share files without any
+                  technical knowledge. And because it's all done within your own network, you can be sure your data is
+                  secure and protected from external threats.</p>
+              </div>
+              <div class="row">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-3">
+                  <div class="innerFileCount">
+                    <h4>25k</h4>
+                    <span>Files sent</span>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-3">
+                  <div class="innerFileCount">
+                    <h4>5k</h4>
+                    <span>Files sent</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+              <div class="row py-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="chooseUsSe text-center">
+                    <img src="/img/img-1.png" alt="img-1">
+                    <h6>Faster Sharing</h6>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="chooseUsSe text-center">
+                    <img src="/img/img-2.png" alt="img-2">
+                    <h6>Secure & Private</h6>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="chooseUsSe text-center">
+                    <img src="/img/img-3.png" alt="img-3">
+                    <h6>Multiple Formats</h6>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-6 col-md-6 col-lg-6">
+                  <div class="chooseUsSe text-center">
+                    <img src="/img/img-4.png" alt="img-4">
+                    <h6>Easy File Sharing</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="secBg" id="pricingSection">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-8 col-lg-10 my-3 py-5">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-4">
+              <div class="pricingSection py-5">
+                <span>Pricing</span>
+                <h3>Upgrade to Premium</h3>
+                <p>Our standard plan offers more advanced features, larger storage space, and additional security
+                  measures to protect your files. This plan is ideal for growing businesses or teams that need more
+                  advanced functionality.</p>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-8">
+              <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-5 mb-3">
+                  <div class="pricingCard">
+                    <span class="recomm">Recommended</span>
+                    <div class="cardHead">
+                      <div class="cardHeadLeft">
+                        <h5>Free</h5>
+                        <span>Basic Plan</span>
+                      </div>
+                      <div class="cardHeadRight">
+                        <h5>$0.00</h5>
+                        <span>Per Month</span>
+                      </div>
+                    </div>
+                    <div class="cardBody">
+                      <ul>
+                        <li>Upto 8 file at once</li>
+                        <li>10Mb per file</li>
+                        <li>Stronge time 30 mins</li>
+                        <li> - </li>
+                        <li> - </li>
+                      </ul>
+                      <a href="#">Get Started</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-5">
+                  <div class="pricingCard">
+                    <span class="recomm">Recommended</span>
+                    <div class="cardHead">
+                      <div class="cardHeadLeft">
+                        <h5>Premium</h5>
+                        <span>premium paid plan</span>
+                      </div>
+                      <div class="cardHeadRight">
+                        <h5>$0.99</h5>
+                        <span>Per Month</span>
+                      </div>
+                    </div>
+                    <div class="cardBody">
+                      <ul>
+                        <li><b>Unlimited</b>file at once</li>
+                        <li><b>Unlimited</b> file size</li>
+                        <li>Stronge time 3 <b>Hours</b></li>
+                        <li> Activate <b>Private Mode</b> </li>
+                        <li> Protact Files from <b>Deletion</b> </li>
+                      </ul>
+                      <a href="#">Get Started</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="secBg-fe" id="FeedbackSection">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="row py-5">
+            <div class="col-sm-12 col-md-12 col-lg-3">
+              <div class="imagesTesti">
+                <div class="textimonialImage img-1 active" id="addMe1">
+                  <img src="/img/clients/client-1.png" alt="client-1">
+                </div>
+                <div class="textimonialImage img-2">
+                  <img src="/img/clients/client-2.png" alt="client-2">
+                </div>
+                <div class="textimonialImage img-3">
+                  <img src="/img/clients/client-3.png" alt="client-3">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6  text-center">
+              <div class="testimonials-text">
+                <span>Reviews</span>
+                <h3>What our Clients <br /> Say about us</h3>
+              </div>
+              <div class="main-tesimonial">
+                <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-interval="false">
+                  <div class="carousel-inner">
+
+                    <div class="carousel-item active" data-img-id="1">
+                      <div class="d-none d-md-block">
+                        <div class="textItem">
+                          <img src="/img/testimonial-img.png" alt="">
+                          <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut
+                            labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida. Risus commodo.
+                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida.</p>
+                          <h5>Mohammad Mostofa</h5>
+                          <span>CEO of uipark</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="carousel-item" data-img-id="2">
+                      <div class="d-none d-md-block">
+                        <div class="textItem">
+                          <img src="/img/testimonial-img.png" alt="">
+                          <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut
+                            labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida. Risus commodo.
+                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida.</p>
+                          <h5>John</h5>
+                          <span>CEO of uipark</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="carousel-item" data-img-id="3">
+                      <div class="d-none d-md-block">
+                        <div class="textItem">
+                          <img src="/img/testimonial-img.png" alt="">
+                          <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut
+                            labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida. Risus commodo.
+                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida.</p>
+                          <h5>Smith</h5>
+                          <span>CEO of uipark</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="carousel-item" data-img-id="4">
+                      <div class="d-none d-md-block">
+                        <div class="textItem">
+                          <img src="/img/testimonial-img.png" alt="">
+                          <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut
+                            labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida. Risus commodo.
+                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida.</p>
+                          <h5>Ronaldo</h5>
+                          <span>CEO of uipark</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="carousel-item" data-img-id="5">
+                      <div class="d-none d-md-block">
+                        <div class="textItem">
+                          <img src="/img/testimonial-img.png" alt="">
+                          <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut
+                            labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida. Risus commodo.
+                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida.</p>
+                          <h5>Cena</h5>
+                          <span>CEO of uipark</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="carousel-item" data-img-id="6">
+                      <div class="d-none d-md-block">
+                        <div class="textItem">
+                          <img src="/img/testimonial-img.png" alt="">
+                          <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut
+                            labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida. Risus commodo.
+                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                            aliqua Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt
+                            ut labore et dolore magna aliqua. Quis ipsum suspendisse is an ultrices gravida.</p>
+                          <h5>Petter</h5>
+                          <span>CEO of uipark</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <button class="carousel-control-prev btn-remove-reviews" type="button"
+                    data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-left testiIconsLeft"
+                      viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                    </svg>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+
+                  <button class="carousel-control-next btn-add-reviews" type="button"
+                    data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                      class="bi bi-arrow-right testiIconsRight" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd"
+                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                    </svg>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-3">
+              <div class="imagesTesti">
+                <div class="textimonialImage img-4">
+                  <img src="/img/clients/client-4.png" alt="client-4">
+                </div>
+                <div class="textimonialImage img-5">
+                  <img src="/img/clients/client-5.png" alt="client-5">
+                </div>
+                <div class="textimonialImage img-6">
+                  <img src="/img/clients/client-6.png" alt="client-6">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <section class="footer-section">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-sm-12 col-md-12 col-lg-4">
+            <div class="footAboutSec">
+              <img src="/img/logo.png" alt="logo">
+              <p>Lorem ipsum dolor sit amet, consectetur scing elit, sed do eiusmod temp or incididunt ut labore et
+                dolore magna aliqua.</p>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-12 col-lg-4">
+            <div class="footPageSec">
+              <h4>Pages</h4>
+              <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Upgrade</a></li>
+                <li><a href="#">Feedback</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-12 col-lg-4">
+            <div class="footSupportSec">
+              <h4>Support</h4>
+              <a href="mailto:support@filesforshare.io">support@filesforshare.io</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <section class="copyRightsec text-center">
+      <div class="copyRight">
+        <p> &copy; 2023 FilesForShare | All Rights Reserved</p>
+      </div>
+    </section>
+  </footer>
+
+  <!-- Login & Register Modal  -->
+  <div class="modal fade" id="LoginRegisterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content"
+        style="box-shadow: 0px 0px 10px 0px #7575756e; border:none!important; border-radius: 15px;">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body logformDD mob-mod-log" style="padding: 20px 20px;">
+          <div class="form-title text-center">
+            <h3>Login</h3>
+          </div>
+          <div class="d-flex flex-column text-center lldd">
+            <form id="login-form" action="" method="post" class="log-fm-JY" style="padding: 0px 20px;">
+              <p>Enter the email address associated with your account</p>
+              <span style="display:none; color:red;" id="login-errors"></span>
+              <div class="form-group">
+                <label for="user-name">Email ID*</label>
+                <input type="text" name="email" class="inpt-me form-control" id="email1"
+                  placeholder="yourname@company.com">
+              </div>
+              <div class="form-group">
+                <label for="user-name">Password*</label>
+                <input type="password" name="password" class="inpt-me form-control" id="password1"
+                  placeholder="********">
+              </div>
+              <br>
+              <button type="submit" class="btn-round bg-backgg">Login</button><br /><br />
+            </form>
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <div class="footModal">No account? <a class="text-info btn-sig registerDD register_btn"
+                style="cursor: pointer; color: #F2644F!important;"> Create one</a>.</div>
+          </div>
+        </div>
+
+
+        <div class="modal-body regformDD mob-mod-reg" style="padding: 20px 20px; display:none!important;">
+          <div class="form-title text-center">
+            <h3>Create Your Account</h3>
+          </div>
+          <div class="d-flex flex-column text-center lldd">
+
+            <form id="register-form" method="POST" action="post" class="reg-fm-JY" style="padding: 0px 20px;">
+              <span style="display:none; color:red;" id="register-errors"></span>
+              <div class="form-group">
+                <label for="user-name">User Name*</label>
+                <input type="name" name="name" class="form-control inpt-me" id="user-name"
+                  placeholder="Deneen R. Mitchell">
+              </div>
+              <div class="form-group">
+                <label for="email">Email ID*</label>
+                <input type="text" name="email" class="form-control inpt-me" id="email"
+                  placeholder="yourname@company.com">
+              </div>
+              <div class="form-group">
+                <label for="password">Password*</label>
+                <input type="password" name="password" class="form-control inpt-me" id="password"
+                  placeholder="************">
+              </div>
+              <br />
+              <div class="checkteams">
+                <input type="checkbox" name="teams" value="" id="teams">
+                <label for="teams">By Signing Up i agree with <a href="#">Teams & Condition</a></label>
+              </div>
+              <button type="submit" class="btn btn-me btn-round bg-backgg">Register Now</button><br><br>
+            </form>
+
+            <div class="socialMediaIcon">
+              <h4>Register Using Social Network</h4>
+              <ul>
+                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+              </ul>
+            </div>
+
+
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <div class="footModal">I'm already member? <a class="text-info btn-sig loginDD login_btn"
+                style="cursor: pointer; color: #F2644F!important;">Login</a></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- login and register modal script -->
+  <script>
+    $(".login_btn").click(function () {
+      $(".regformDD").hide();
+      $(".logformDD").show();
+    });
+
+    $(".register_btn").click(function () {
+      $(".logformDD").hide();
+      $(".regformDD").show();
+    });
+  </script>
+
+
+  <!-- <script type="text/javascript">
+        (function() {
+          'use strict';
+          $('#fileupload').fileupload({
+          dataType: 'json',
+          type: 'POST',
+          url: '//jquery-file-upload.appspot.com/',
+          add: function (e, data) {
+            $('.headSec').css('display', 'block');
+            $('#filename').text(data.files[0].name);           
+            var filesize = (data.files[0].size/1024/1024).toFixed(1);
+            $('#fileSize').text(filesize + ' MB');
+
+            $(".uploadCenterTest").hide();
+            $(".uploadStatusView").show();
+            $('#upload-status').text("Uploading...");
+
+            setProgressBar(0);
+            data.submit();
+          },
+          progressall: function (e, data) {
+            setProgressBar(parseInt(data.loaded / data.total * 100, 10));
+          },
+          done: function (e, data) {
+            $('#upload-status').text("Uploading Complete!");
+          }
+          });
+          
+          function setProgressBar(percentage) {
+          $('#progress .bar').css(
+            'width',
+            'bar',
+            percentage + '%'
+          ).text(percentage + '%');
+          }
+
+        }).call(this);
+      </script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+  <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js'></script>
+  <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/js/fileinput.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/js/plugins/sortable.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.8/themes/fas/theme.min.js'></script>
+
+  <!-- file upload script -->
+  <script>
+    // ----------multiplefile-upload---------
+    $("#multiplefileupload").fileinput({
+      'theme': 'fa',
+      'uploadUrl': '#',
+      showRemove: false,
+      showUpload: false,
+      progress: true,
+      showZoom: false,
+      showCaption: false,
+      browseClass: "btn btn-uploadUds",
+      browseLabel: "Add File <p>(Up to 10mb)</p>",
+      browseIcon: "<img class='uploadIconImg' src='/img/upload-img1.png' alt='upload-img1'>",
+      overwriteInitial: false,
+      initialPreviewAsData: true,
+      fileActionSettings: {
+        showUpload: false,
+        showZoom: false,
+        removeIcon: "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-x-lg' viewBox='0 0 16 16'><path d='M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z'/></svg>",
+      }
+    });
+
+
+    $('.btn-file').on('click', function () {
+      $('div.btn-file.btn-uploadUds').removeClass('btn-uploadUds');
+      $(this).addClass('btn-uploadXds');
+    });
+
+  </script>
+
+  <!-- Testimonials slider script -->
+  <script>
+    $('.btn-add-reviews').click(function () {
+      var current_carousel = parseInt($('.carousel-inner').find(".active").attr('data-img-id'));
+      if (current_carousel === 6) {
+        current_carousel = 1;
+      } else {
+        current_carousel += 1;
+      }
+      $('.textimonialImage').removeClass('active');
+      $(`.img-${current_carousel}`).addClass('active');
+      console.log(current_carousel);
+    });
+
+    $('.btn-remove-reviews').click(function () {
+      var current_carousel = parseInt($('.carousel-inner').find(".active").attr('data-img-id'));
+      if (current_carousel === 1) {
+        current_carousel = 6;
+      } else {
+        current_carousel -= 1;
+      }
+      $('.textimonialImage').removeClass('active');
+      $(`.img-${current_carousel}`).addClass('active');
+      console.log(current_carousel);
+    });
+  </script>
+</body>
+
+</html>

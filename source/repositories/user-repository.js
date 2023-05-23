@@ -10,9 +10,13 @@ class UserRepository {
     }
   }
 
-  async findUser(query) {
+  async findUser(query, fieldToPopulate) {
     try {
-      const user = await User.findOne(query);
+      if (!fieldToPopulate) {
+        const user = await User.findOne(query);
+        return user;
+      }
+      const user = await User.findOne(query).populate(fieldToPopulate);
       return user;
     } catch (error) {
       throw new Error("Failed to find user: " + error.message);
@@ -30,7 +34,7 @@ class UserRepository {
 
   async updateUser(query, updatedData) {
     try {
-      const updatedUser = await User.findByIdAndUpdate(query, updatedData, {
+      const updatedUser = await User.findOneAndUpdate(query, updatedData, {
         new: true,
       });
       return updatedUser;
@@ -41,7 +45,7 @@ class UserRepository {
 
   async deleteUser(query) {
     try {
-      const deletedUser = await User.findByIdAndDelete(query);
+      const deletedUser = await User.findOneAndDelete(query);
       return deletedUser;
     } catch (error) {
       throw new Error("Failed to delete user: " + error.message);

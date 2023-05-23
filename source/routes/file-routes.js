@@ -4,12 +4,14 @@ const {
   uploadFiles,
   writeFile,
   readFile,
+  removeDataFromFile,
 } = require("../controllers/file-controller");
 const { upload } = require("../middlewares/multer-middleware");
 
 router
-  .get(URL.uploadFiles, upload.array("files", 20), uploadFiles)
-  .get(URL.writeFile, writeFile)
+  .post(URL.uploadFiles, upload.array("files", 20), uploadFiles)
+  .post(URL.writeFile, writeFile)
+  .get(URL.deleteFile, removeDataFromFile)
   .get(URL.readFile, readFile);
 
 module.exports = router;

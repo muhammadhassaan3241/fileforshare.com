@@ -102,6 +102,19 @@ class FileSystemRepository {
     });
   }
 
+  // remove data from file
+  removeFile(filePath) {
+    const modifiedData = "";
+    fs.writeFile(filePath, modifiedData, "utf8", function (err) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("Data removed from the file successfully.");
+      return true;
+    });
+  }
+
   // Error handling
   writeFile(filePath, content, callback) {
     const lines = content.split("\n");

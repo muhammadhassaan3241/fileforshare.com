@@ -4,19 +4,21 @@ const {
 } = require("../constants/http-status");
 const { apiResponse } = require("../constants/response");
 const {
-  login,
-  signUp,
-  forgotPassword,
-  resetPassword,
+  getUser,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
 } = require("../services/user-service");
 
 module.exports = {
-  login: async (request, response) => {
+  getOne: async (request, response) => {
     try {
-      const { body, ip } = request;
-      const { data, status, code, message } = await login(body, ip);
+      const { query, ip } = request;
+      const { data, status, code, message } = await getUser(query, ip);
       return apiResponse(response, status, code, message, data);
     } catch (error) {
+      console.log(error);
       return apiResponse(
         response,
         HttpStatusCodes.badRequest,
@@ -26,12 +28,14 @@ module.exports = {
       );
     }
   },
-  signUp: async (request, response) => {
+
+  getAll: async (request, response) => {
     try {
-      const { body, ip } = request;
-      const { data, status, code, message } = await signUp(body, ip);
+      const { query, ip } = request;
+      const { data, status, code, message } = await getUsers(query, ip);
       return apiResponse(response, status, code, message, data);
     } catch (error) {
+      console.log(error);
       return apiResponse(
         response,
         HttpStatusCodes.badRequest,
@@ -41,16 +45,55 @@ module.exports = {
       );
     }
   },
-  forgotPassword: async (request, response) => {
+
+  create: async (request, response) => {
     try {
+      const { body, ipAddress } = request;
+      const { data, status, code, message } = await createUser(body, ip);
+      return apiResponse(response, status, code, message, data);
     } catch (error) {
-      throw new Error(`error forgetting user password => ${error.message}`);
+      console.log({ error });
+      return apiResponse(
+        response,
+        HttpStatusCodes.badRequest,
+        HttpStatusCodes.badRequest,
+        HttpStatusNames.badRequest,
+        undefined
+      );
     }
   },
-  resetPassword: async (request, response) => {
+
+  update: async (request, response) => {
     try {
+      const { query, body, ip } = request;
+      const { data, status, code, message } = await updateUser(query, body, ip);
+      return apiResponse(response, status, code, message, data);
     } catch (error) {
-      throw new Error(`error resetting user password => ${error.message}`);
+      console.log({ error });
+      return apiResponse(
+        response,
+        HttpStatusCodes.badRequest,
+        HttpStatusCodes.badRequest,
+        HttpStatusNames.badRequest,
+        undefined
+      );
+    }
+  },
+
+  remove: async (request, response) => {
+    try {
+      const { query, ip } = request;
+      const { data, status, code, message } = await deleteUser(query, ip);
+      return apiResponse(response, status, code, message, data);
+    } catch (error) {
+      console.log({ error });
+      return apiResponse(
+        response,
+        HttpStatusCodes.badRequest,
+        HttpStatusCodes.badRequest,
+        HttpStatusNames.badRequest,
+        undefined
+      );
     }
   },
 };

@@ -1,4 +1,4 @@
-const Role = require("../models/user-model");
+const Role = require("../models/role-model");
 
 class UserRepository {
   async createRole(roleData) {
@@ -8,9 +8,13 @@ class UserRepository {
     } catch (error) {}
   }
 
-  async findRole(query) {
+  async findRole(query, fieldToPopulate) {
     try {
-      const role = await Role.findOne(query);
+      if (!fieldToPopulate) {
+        const role = await Role.findOne(query);
+        return role;
+      }
+      const role = await Role.findOne(query).populate(fieldToPopulate);
       return role;
     } catch (error) {}
   }

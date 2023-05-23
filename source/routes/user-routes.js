@@ -1,16 +1,18 @@
 const router = require("express").Router();
 const { URL } = require("../constants/all-url");
 const {
-  login,
-  signUp,
-  forgotPassword,
-  resetPassword,
+  getOne,
+  getAll,
+  create,
+  update,
+  remove,
 } = require("../controllers/user-controller");
 
 router
-  .post(URL.login, login)
-  .post(URL.signUp, signUp)
-  .post(URL.forgotPassword, forgotPassword)
-  .post(URL.resetPassword, resetPassword);
+  .get(URL.findUser, getOne)
+  .get(URL.findUsers, getAll)
+  .post(URL.createUser, create)
+  .post(URL.updateUser, update)
+  .get(URL.deleteUser, remove);
 
 module.exports = router;

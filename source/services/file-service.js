@@ -9,7 +9,7 @@ const userRepository = require("../repositories/user-repository");
 const { appFolders } = require("../app");
 
 module.exports = {
-  uploadFiles: async (ipAddress) => {
+  uploadFiles: async (body, files, ipAddress) => {
     try {
       if (ipAddress === undefined) {
         return {
@@ -19,7 +19,9 @@ module.exports = {
           message: "Failed To Fetch IP Address",
         };
       }
-      const ip = ipAddress.replace(/[:.]/g, "");
+
+      console.log({ files });
+      return;
     } catch (error) {
       return {
         code: HttpStatusCodes.internalServerError,
@@ -28,9 +30,9 @@ module.exports = {
     }
   },
 
-  writeFile: async (body, ipAddress) => {
+  writeFile: async (body, ip) => {
     try {
-      if (ipAddress === undefined) {
+      if (ip === undefined) {
         return {
           data: {},
           status: HttpStatusCodes.badRequest,
@@ -38,7 +40,7 @@ module.exports = {
           message: "Failed To Fetch IP Address",
         };
       }
-      const ip = ipAddress.replace(/[:.]/g, "");
+
       const { text } = body;
 
       return new Promise((resolve, reject) => {
@@ -71,9 +73,9 @@ module.exports = {
     }
   },
 
-  readFile: async (ipAddress) => {
+  readFile: async (ip) => {
     try {
-      if (ipAddress === undefined) {
+      if (ip === undefined) {
         return {
           data: {},
           status: HttpStatusCodes.badRequest,
@@ -81,7 +83,6 @@ module.exports = {
           message: "Failed To Fetch IP Address",
         };
       }
-      const ip = ipAddress.replace(/[:.]/g, "");
 
       return new Promise((resolve, reject) => {
         fileSystemRepository.readFile(
@@ -107,6 +108,49 @@ module.exports = {
       });
     } catch (error) {
       return {
+        data: {},
+        status: HttpStatusCodes.internalServerError,
+        code: HttpStatusCodes.internalServerError,
+        message: HttpStatusNames.internalServerError,
+      };
+    }
+  },
+
+  removeData: async (ip) => {
+    try {
+      if (ip === undefined) {
+        return {
+          data: {},
+          status: HttpStatusCodes.badRequest,
+          code: HttpStatusCodes.badRequest,
+          message: "Failed To Fetch IP Address",
+        };
+      }
+
+      return new Promise((resolve, reject) => {
+        const removeFile = fileSystemRepository.removeFile(
+          `${appFolders}/${ip}/file user-${ip}.txt`
+        );
+        if (!removeFile) {
+          resolve({
+            data: {},
+            status: HttpStatusCodes.badRequest,
+            code: HttpStatusCodes.badRequest,
+            message: "Error Removing Data From File",
+          });
+        } else {
+          resolve({
+            data: removeFile,
+            status: HttpStatusCodes.ok,
+            code: HttpStatusCodes.ok,
+            message: HttpStatusNames.ok,
+          });
+        }
+      });
+    } catch (error) {
+      return {
+        data: {},
+        status: HttpStatusCodes.internalServerError,
         code: HttpStatusCodes.internalServerError,
         message: HttpStatusNames.internalServerError,
       };

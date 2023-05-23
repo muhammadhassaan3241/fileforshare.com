@@ -30,7 +30,6 @@ module.exports = {
           });
         }
 
-        const ip = ipAddress.replace(/[:.]/g, "");
         const plan = await planRepository.findPlan({ name, type });
 
         if (!plan) {
@@ -72,7 +71,6 @@ module.exports = {
           });
         }
 
-        const ip = ipAddress.replace(/[:.]/g, "");
         const plans = await planRepository.findPlans({
           $or: [{ name }, { type }],
         });
@@ -127,7 +125,6 @@ module.exports = {
           });
         }
 
-        const ip = ipAddress.replace(/[:.]/g, "");
         const formData = {
           name,
           type,
@@ -203,7 +200,6 @@ module.exports = {
           });
         }
 
-        const ip = ipAddress.replace(/[:.]/g, "");
         const formData = {
           name,
           type,
@@ -267,8 +263,6 @@ module.exports = {
             message: "Failed To Fetch IP Address",
           });
         }
-
-        const ip = ipAddress.replace(/[:.]/g, "");
 
         const deletePlan = await planRepository.deletePlan({
           name,

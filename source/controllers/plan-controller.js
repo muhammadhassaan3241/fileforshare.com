@@ -48,7 +48,7 @@ module.exports = {
 
   create: async (request, response) => {
     try {
-      const { body, ip } = request;
+      const { body, ipAddress } = request;
       const { data, status, code, message } = await createPlan(body, ip);
       return apiResponse(response, status, code, message, data);
     } catch (error) {
@@ -65,7 +65,7 @@ module.exports = {
 
   update: async (request, response) => {
     try {
-      const { body, ip } = request;
+      const { body, ipAddress } = request;
       const { data, status, code, message } = await updatePlan(body, ip);
       return apiResponse(response, status, code, message, data);
     } catch (error) {
